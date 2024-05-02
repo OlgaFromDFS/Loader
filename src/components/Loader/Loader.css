@@ -5,14 +5,12 @@
   background-color: #171917;
   border-radius: 25px;
 
-  margin: 50px;
+  margin: 30px;
 
   overflow: hidden;
 }
 
-.Loader-Process {
-  cursor: grabbing;
-  
+.Loader-Progress {  
   user-select: none;
 
   height: 100%;

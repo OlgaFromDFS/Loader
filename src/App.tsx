@@ -1,7 +1,5 @@
 import React from 'react';
 
-import './App.css';
-
 import { General } from './components/General/General';
 
 const App = () => {
@@ -9,7 +7,7 @@ const App = () => {
     <div className="App">
       <General />
     </div>
-  );
-}
+  )
+};
 
 export { App };

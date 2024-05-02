@@ -17,7 +17,7 @@ const StupidLoader: FC = () => {
       <div className={cnStupidLoader('Inner')} style={{  width: value + '%'}} />
       <input className={cnStupidLoader('Control')} value={value} onChange={ handleChange } type='range' min={0} max={100} step={1}/>
     </div>
-  );
-}
+  )
+};
 
 export { StupidLoader };

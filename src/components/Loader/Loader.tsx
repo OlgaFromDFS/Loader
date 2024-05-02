@@ -6,71 +6,61 @@ import { cnLoader } from './Loader.classname';
 import './Loader.css';
 
 type LoaderProps = {
-  // onMouseChange: (value: number) => void;
+  onChange: (value: number) => void;
+  value: number;
 };
 
-const Loader: FC<LoaderProps> = ({  }) => {
-  const [value, setValue] = useState(0);
+const Loader: FC<LoaderProps> = ({ onChange, value }) => {
   const [down, setDown] = useState(false);
+  const [locked, setLocked] = useState(false);
 
-  const handleMouseDown = (event: ReactMouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleMouseDown = () => {
     setDown(true);
-    event.stopPropagation();
-    event.preventDefault();
-    console.log(event);
-
   };
 
-  const handleMouseUp = (event: ReactMouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleMouseUp = () => {
     setDown(false);
-    event.stopPropagation();
-    event.preventDefault();
-    console.log(event);
-
   };
 
+  const handleMouseLeave = () => {
+    setDown(false);
+  };
+  
   const handleMouseMove = (event: ReactMouseEvent<HTMLDivElement, MouseEvent>) => {
-    event.stopPropagation();
-    event.preventDefault();
-    const target = event.target;
-    console.log(event);
-
+    const target = event.currentTarget;
 
     if (!(target instanceof HTMLDivElement)) {
       throw new Error('Не тот target.');
     }
     
     let clientX = event.clientX;
-    console.log(clientX, 'число смещения');
     const loaderWidth = target.offsetWidth;
-    console.log(loaderWidth, 'ширина лоадера');
     let movementInPercent = (clientX / loaderWidth) * 100;
-    console.log(movementInPercent, 'движение в %');
 
+    if (movementInPercent === 100) {
+      setLocked(true);
+    }
+    
+    if (movementInPercent <= 0) {
+      movementInPercent = 0;
+    } else if (movementInPercent >= 100) {
+      movementInPercent = 100;
+    }
 
     if (down) {
-      setValue(movementInPercent);
-      console.log(value, 'value');
-
-
-      // if (value <= 0) {
-      //   setValue(0);
-      // } else if (value >= 100) {
-      //   setValue(100);
-      // }
+      onChange(movementInPercent);
     }
   };
-
-
 
   return (
     <div className={cnLoader()}
         onMouseDown={handleMouseDown} 
-        onMouseMove={handleMouseMove} 
+        onMouseMove={locked ? undefined : handleMouseMove} 
         onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseLeave}
      >
       <div 
-        className={cnLoader('Process')} 
+        className={cnLoader('Progress')} 
         style={{ width: value + '%' }}
       >
       {Math.round(value)}
